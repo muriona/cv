@@ -4,7 +4,7 @@ author: Mauricio Uriona Maldonado
 date: "`r Sys.Date()`"
 params:
   pdf_mode:
-    value: true
+    value: false
 output:
   pagedown::html_resume:
     css: ['dd_cv.css', 'resume1.css']
@@ -49,7 +49,7 @@ if(params$pdf_mode) {
 if(params$pdf_mode){
   cat("View this CV online with links at https://cv-muriona.netlify.app/")
 } else {
-  cat("[<i class='fas fa-download'></i> Download a PDF of this CV](https://github.com/muriona/cv/raw/master/muriona-cv.pdf)")
+  cat("[<i class='fas fa-download'></i> Download a PDF of this CV](https://github.com/muriona/cv/blob/main/muriona-cv.pdf)")
 }
 ```
 
