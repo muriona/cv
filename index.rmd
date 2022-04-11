@@ -4,12 +4,13 @@ author: Mauricio Uriona Maldonado
 date: "`r Sys.Date()`"
 params:
   pdf_mode:
-    value: true
+    value: false
 output:
   pagedown::html_resume:
-    css: ['dd_cv.css', 'resume1.css']
-    #css: ['custom_resume_mleary.css', 'styles_html_mleary.css', 'resume']
+    #css: ['dd_cv.css', 'resume1.css']
+    css: ['custom_resume_mleary.css', 'styles_html_mleary.css', 'resume']
     self_contained: false
+#knit: pagedown::chrome_print
 ---
 
 ```{r, include=FALSE}
@@ -50,7 +51,7 @@ if(params$pdf_mode) {
 if(params$pdf_mode){
   cat("View this CV online with links at https://cv-muriona.netlify.app/")
 } else {
-  cat("[<i class='fas fa-download'></i> Download a PDF of this CV](https://github.com/muriona/cv/blob/main/muriona-cv.pdf)")
+  cat("[<i class='fas fa-download'></i> Download a PDF of this CV](https://github.com/muriona/cv/blob/main/index.pdf)")
 }
 ```
 
@@ -80,7 +81,7 @@ glue::glue('
     - <i class="fa fa-github"></i> [github.com/muriona](https://github.com/muriona)
     - <i class="fab fa-linkedin-in"></i> [linkedin.com/uriona](https://www.linkedin.com/in/uriona/)
     - <i class="fa fa-globe"></i> [orcid: 0000-0002-1174-4828](https://www.orcid.org/0000-0002-1174-4828)
-    - <i class="fab fa-researchgate"></i> [researchgate.net/Mauricio-Uriona-Maldonado](https://www.researchgate.net/profile/Mauricio-Uriona-Maldonado-2)
+    - <i class="fab fa-researchgate"></i> [Mauricio-Uriona-Maldonado](https://www.researchgate.net/profile/Mauricio-Uriona-Maldonado-2)
   ')
 ```
 
@@ -88,20 +89,37 @@ glue::glue('
 
 ## Language Skills {#skills}
 
-```{r}
+```{r langskills}
 CV %>% print_skill_bars()
+
 ```
 
 ## Specific Skills {#specskills}
 
--   `r fa("laptop", fill = "#254661",height = "1em")` **Programming**: RStudio, System Dynamics (Stella and Vensim), Tableau
--   `r fa("lightbulb", fill = "#254661",height = "1em")` **Other**: data analysis, data visualization, machine learning
+```{r techskills}
+CV %>% print_techskill_bars()
+```
+
+**Programming and Tech Skills**
+
+```{r otherskills}
+
+glue::glue('
+    - <i class="fa fa-laptop"></i> [Stella](www.iseesystems.com)
+    - <i class="fa fa-laptop"></i> [Vensim](http://www.vensim.com)
+    - <i class="fab fa-r-project"></i> [R](https://www.r-project.org/)
+    - <i class="fab fa-python"></i> [Python](https://www.python.org/)
+  ')
+
+```
+
+
 
 ## Disclaimer {#disclaimer}
 
-Made with the R package [**pagedown**](https://github.com/rstudio/pagedown).
+Made with [**pagedown**](https://github.com/rstudio/pagedown), an *R* package.
 
-Last updated on `r format(Sys.Date(), "%d-%m-%Y")`.
+Last updated on `r format(Sys.Date(), "%d-%b-%Y")`.
 
 # Main
 
@@ -122,13 +140,13 @@ as.character(intro)
 CV %<>% print_section('education')
 ```
 
-## Teaching Experience {data-icon="chalkboard-teacher"}
+## Academic Experience {data-icon="chalkboard-teacher"}
 
 ```{r teaching}
 CV %<>% print_section('teaching_positions')
 ```
 
-## Training Abroad {data-icon="globe"}
+## Visiting Positions {data-icon="globe"}
 
 ```{r}
 CV %<>% print_section('research_positions')

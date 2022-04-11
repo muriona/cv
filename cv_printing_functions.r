@@ -42,6 +42,7 @@ create_CV_object <-  function(data_location,
     }
     cv$entries_data  <- read_gsheet(sheet_id = "entries")
     cv$skills        <- read_gsheet(sheet_id = "language_skills")
+    cv$techskills   <- read_gsheet(sheet_id = "tech_skills")
     cv$text_blocks   <- read_gsheet(sheet_id = "text_blocks")
     cv$contact_info  <- read_gsheet(sheet_id = "contact_info")
   } else {
@@ -236,5 +237,26 @@ print_contact_info <- function(cv){
     "- <i class='fa fa-{icon}'></i> {contact}"
   ) %>% print()
 
+  invisible(cv)
+}
+
+#' @description Construct a bar chart of tech skills
+#' @param out_of The relative maximum for skills. Used to set what a fully filled in skill bar is.
+print_techskill_bars <- function(cv, out_of = 5, bar_color = "#254661", bar_background = "#d9d9d9", glue_template = "default"){
+  
+  if(glue_template == "default"){
+    glue_template <- "
+<div
+  class = 'skill-bar'
+  style = \"background:linear-gradient(to right,
+                                      {bar_color} {width_percent}%,
+                                      {bar_background} {width_percent}% 100%)\"
+>{skill}</div>"
+  }
+  cv$techskills %>%
+    dplyr::mutate(width_percent = round(100*as.numeric(level)/out_of)) %>%
+    glue::glue_data(glue_template) %>%
+    print()
+  
   invisible(cv)
 }
