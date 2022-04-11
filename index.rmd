@@ -100,12 +100,12 @@ CV %>% print_skill_bars()
 CV %>% print_techskill_bars()
 ```
 
-**Programming and Tech Skills**
+## Programming Skills {#techskills}
 
 ```{r otherskills}
 
 glue::glue('
-    - <i class="fa fa-laptop"></i> [Stella](www.iseesystems.com)
+    - <i class="fa fa-laptop"></i> [Stella](http://www.iseesystems.com)
     - <i class="fa fa-laptop"></i> [Vensim](http://www.vensim.com)
     - <i class="fab fa-r-project"></i> [R](https://www.r-project.org/)
     - <i class="fab fa-python"></i> [Python](https://www.python.org/)
@@ -114,6 +114,13 @@ glue::glue('
 ```
 
 
+**Learning online from:**
+
+-   Datacamp
+-   Coursera
+-   EDx
+-   Linkedin Learning
+-   Tableau for Teaching
 
 ## Disclaimer {#disclaimer}
 
@@ -153,22 +160,20 @@ CV %<>% print_section('research_positions')
 ```
 
 ::: {.aside}
+
+**Noteworthy International Collaborations**
+
+- w/ Prof. Sara Grobbelaar `r emo::ji("south_africa")`
+- w/ Prof. Peter Wells `r emo::ji("uk")`
+- w/ Prof. Milton Herrera `r emo::ji("colombia")`
+- w/ Prof. Minelle Silva `r emo::ji("france")`
+
 ```{r eval=FALSE}
 CV %<>% print_text_block('learning_experience_aside')
 ```
 :::
 
-## Distance Learning Education {.aside .extra-sidebar data-icon="school"}
 
--   Datacamp
-
--   Coursera
-
--   EDx
-
--   Linkedin Learning
-
--   Tableau for Teaching
 
 
 ## Industry Experience {data-icon="suitcase"}
@@ -222,4 +227,4 @@ CV %<>% print_links()
 -   **59** Journal Publications
 -   **138** Conference Papers
 
-See full details in the online cv [here](http://lattes.cnpq.br/6929645347412345)
+See full details at the Brazilian Lattes online cv Platform [here](http://lattes.cnpq.br/6929645347412345)
