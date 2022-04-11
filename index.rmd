@@ -4,10 +4,11 @@ author: Mauricio Uriona Maldonado
 date: "`r Sys.Date()`"
 params:
   pdf_mode:
-    value: false
+    value: true
 output:
   pagedown::html_resume:
     css: ['dd_cv.css', 'resume1.css']
+    #css: ['custom_resume_mleary.css', 'styles_html_mleary.css', 'resume']
     self_contained: false
 ---
 
@@ -55,19 +56,35 @@ if(params$pdf_mode){
 
 ## Contact {#contact}
 
-```{r eval = FALSE}
-CV %>% print_contact_info()
+- Born and raised in La Paz, Bolivia `r emo::ji("bolivia")`
+
+- Lives in Florianopolis, Brazil `r emo::ji("brazil")`
+
+```{r message=FALSE, warning=FALSE}
+library(lubridate)
+
+dob <- ymd(19820425)
+myage <- interval(dob,today())
+myage <- myage %/% years(1)
+
 ```
 
--   `r fa("envelope", fill = "#254661",height = "20px")` [m.uriona at ufsc.br](mailto:m.uriona@ufsc.br)
+- Age: *`r myage` years old*
 
--   `r fa("link", fill = "#254661",height = "20px")` [sinergia](http://www.sinergia.ufsc.br/eng-uriona)
+```{r contactinfo}
+#CV %>% print_contact_info()
 
--   `r fa("researchgate", fill = "#254661",height = "20px")` [researchgate](https://www.researchgate.net/profile/Mauricio-Uriona-Maldonado-2)
+glue::glue('
+    - <i class="fa fa-envelope"></i> m.uriona@ufsc.br
+    - <i class="fa fa-globe"></i> [sinergia.ufsc.br](http://www.sinergia.ufsc.br/eng-uriona)
+    - <i class="fa fa-github"></i> [github.com/muriona](https://github.com/muriona)
+    - <i class="fab fa-linkedin-in"></i> [linkedin.com/uriona](https://www.linkedin.com/in/uriona/)
+    - <i class="fa fa-globe"></i> [orcid: 0000-0002-1174-4828](https://www.orcid.org/0000-0002-1174-4828)
+    - <i class="fab fa-researchgate"></i> [researchgate.net/Mauricio-Uriona-Maldonado](https://www.researchgate.net/profile/Mauricio-Uriona-Maldonado-2)
+  ')
+```
 
--   `r fa("linkedin", fill = "#254661",height = "20px")` [uriona](https://www.linkedin.com/in/uriona/)
 
--   `r fa("orcid", fill = "#254661", height = "20px")` [0000-0002-1174-4828](https://orcid.org/0000-0002-1174-4828)
 
 ## Language Skills {#skills}
 
@@ -84,7 +101,7 @@ CV %>% print_skill_bars()
 
 Made with the R package [**pagedown**](https://github.com/rstudio/pagedown).
 
-Last updated on `r format(Sys.Date(), "%Y-%b-%d")`.
+Last updated on `r format(Sys.Date(), "%d-%m-%Y")`.
 
 # Main
 
