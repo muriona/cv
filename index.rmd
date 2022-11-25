@@ -4,13 +4,14 @@ author: Mauricio Uriona Maldonado
 date: "`r Sys.Date()`"
 params:
   pdf_mode:
-    value: false
+    value: true
 output:
   pagedown::html_resume:
     #css: ['dd_cv.css', 'resume1.css']
     css: ['custom_resume_mleary.css', 'styles_html_mleary.css', 'resume']
+    #css: ['dd_cv_milz.css','custom_milz.css','resume']
     self_contained: false
-#knit: pagedown::chrome_print
+knit: pagedown::chrome_print
 ---
 
 ```{r, include=FALSE}
@@ -24,6 +25,7 @@ library(fontawesome)
 source("cv_printing_functions.r")
 library(googlesheets4)
 library(rorcid)
+#devtools::install_github("hadley/emo")
 
 # Read in all data and initialize a CV printer object
 CV <- create_CV_object(
@@ -77,11 +79,7 @@ myage <- myage %/% years(1)
 
 glue::glue('
     - <i class="fa fa-envelope"></i> m.uriona@ufsc.br
-    - <i class="fa fa-globe"></i> [sinergia.ufsc.br](http://www.sinergia.ufsc.br/eng-uriona)
-    - <i class="fa fa-github"></i> [github.com/muriona](https://github.com/muriona)
-    - <i class="fab fa-linkedin-in"></i> [linkedin.com/uriona](https://www.linkedin.com/in/uriona/)
-    - <i class="fa fa-globe"></i> [orcid: 0000-0002-1174-4828](https://www.orcid.org/0000-0002-1174-4828)
-    - <i class="fab fa-researchgate"></i> [Mauricio-Uriona-Maldonado](https://www.researchgate.net/profile/Mauricio-Uriona-Maldonado-2)
+    - <i class="fa fa-globe"></i> [-](http://www.sinergia.ufsc.br/eng-uriona) <i class="fa fa-github"></i> [-](https://github.com/muriona) <i class="fab fa-linkedin-in"></i> [-](https://www.linkedin.com/in/uriona/) <i class="fa fa-globe"></i> [-](https://www.orcid.org/0000-0002-1174-4828) <i class="fab fa-researchgate"></i> [-](https://www.researchgate.net/profile/Mauricio-Uriona-Maldonado-2)
   ')
 ```
 
@@ -106,21 +104,16 @@ CV %>% print_techskill_bars()
 
 glue::glue('
     - <i class="fa fa-laptop"></i> [Stella](http://www.iseesystems.com)
+    
     - <i class="fa fa-laptop"></i> [Vensim](http://www.vensim.com)
+    
     - <i class="fab fa-r-project"></i> [R](https://www.r-project.org/)
+    
     - <i class="fab fa-python"></i> [Python](https://www.python.org/)
   ')
 
 ```
 
-
-**Learning online from:**
-
--   Datacamp
--   Coursera
--   EDx
--   Linkedin Learning
--   Tableau for Teaching
 
 ## Disclaimer {#disclaimer}
 
@@ -153,15 +146,26 @@ CV %<>% print_section('education')
 CV %<>% print_section('teaching_positions')
 ```
 
+
+
 ## Visiting Positions {data-icon="globe"}
 
 ```{r}
 CV %<>% print_section('research_positions')
 ```
 
+ 
 ::: {.aside}
 
-**Noteworthy International Collaborations**
+**Learning online from:**
+
+-   Datacamp
+-   Coursera
+-   EDx
+-   Linkedin Learning
+-   Tableau for Teaching
+
+***Noteworthy International Collaborations***
 
 - w/ Prof. Sara Grobbelaar `r emo::ji("south_africa")`
 - w/ Prof. Peter Wells `r emo::ji("uk")`
@@ -221,10 +225,9 @@ CV %<>% print_links()
 
 ## Pub Record
 
--   **59** Journal Publications
+-   **65** Journal Publications
 -   **5** Books
 -   **29** Book Chapters
--   **59** Journal Publications
 -   **138** Conference Papers
 
 See full details at the Brazilian Lattes online cv Platform [here](http://lattes.cnpq.br/6929645347412345)
