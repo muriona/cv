@@ -4,7 +4,7 @@ author: Mauricio Uriona Maldonado
 date: "`r Sys.Date()`"
 params:
   pdf_mode:
-    value: true
+    value: false
 output:
   pagedown::html_resume:
     #css: ['dd_cv.css', 'resume1.css']
@@ -152,18 +152,20 @@ CV %<>% print_section('teaching_positions')
 
 ```{r}
 CV %<>% print_section('research_positions')
+
+#**Learning online from:**
+
+#-   Datacamp
+#-   Coursera
+#-   EDx
+#-   Linkedin Learning
+#-   Tableau for Teaching
+
 ```
 
  
 ::: {.aside}
 
-**Learning online from:**
-
--   Datacamp
--   Coursera
--   EDx
--   Linkedin Learning
--   Tableau for Teaching
 
 ***Noteworthy International Collaborations***
 
@@ -171,6 +173,7 @@ CV %<>% print_section('research_positions')
 - w/ Prof. Peter Wells `r emo::ji("uk")`
 - w/ Prof. Milton Herrera `r emo::ji("colombia")`
 - w/ Prof. Minelle Silva `r emo::ji("france")`
+- w/ Prof. Guillermo Davila `r emo::ji("peru")`
 
 ```{r eval=FALSE}
 CV %<>% print_text_block('learning_experience_aside')
