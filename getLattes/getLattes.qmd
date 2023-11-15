@@ -53,3 +53,14 @@ livros <- getCapitulosLivros(lattes)
 congressos <- getLattes::getTrabalhosEmEventos(lattes)
 projetos<- getParticipacaoProjeto(lattes)
 ```
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+projetos %>% 
+  filter(ano_inicio>2020) %>% 
+  select(nome_do_projeto_ingles, ano_inicio,financiadores) %>% 
+  knitr::kable()
+```

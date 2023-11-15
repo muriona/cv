@@ -25,6 +25,7 @@ library(fontawesome)
 source("cv_printing_functions.r")
 library(googlesheets4)
 library(rorcid)
+library(tidyverse)
 #devtools::install_github("hadley/emo")
 
 # Read in all data and initialize a CV printer object
@@ -98,7 +99,7 @@ CV %>% print_skill_bars()
 CV %>% print_techskill_bars()
 ```
 
-## Programming Skills {#techskills}
+## Modelling Skills {#techskills}
 
 ```{r otherskills}
 
@@ -106,6 +107,8 @@ glue::glue('
     - <i class="fa fa-laptop"></i> [Stella](http://www.iseesystems.com)
     
     - <i class="fa fa-laptop"></i> [Vensim](http://www.vensim.com)
+    
+    - <i class="fa fa-laptop"></i> [Anylogic](http://www.anylogic.com)
     
     - <i class="fab fa-r-project"></i> [R](https://www.r-project.org/)
     
@@ -131,7 +134,8 @@ Last updated on `r format(Sys.Date(), "%d-%b-%Y")`.
 
 intro <- orcid_bio("0000-0002-1174-4828")
 intro <- intro$`0000-0002-1174-4828`$content
-as.character(intro)
+
+glue::glue('{intro}')
 ```
 
 ## Education {data-icon="graduation-cap" data-concise="true"}
@@ -173,11 +177,12 @@ CV %<>% print_section('research_positions')
 
 ***Noteworthy International Collaborations***
 
-- w/ Prof. Sara Grobbelaar `r emo::ji("south_africa")`
-- w/ Prof. Peter Wells `r emo::ji("uk")`
-- w/ Prof. Milton Herrera `r emo::ji("colombia")`
-- w/ Prof. Minelle Silva `r emo::ji("france")`
-- w/ Prof. Guillermo Davila `r emo::ji("peru")`
+- w/ Prof. Sara Grobbelaar (Stellenbosch Univ) `r emo::ji("south_africa")`
+- w/ Prof. Rainer Walz (Fraunhofer ISI) `r emo::ji("germany")`
+- w/ Prof. Milton Herrera (Univ Militar Nueva Granada)`r emo::ji("colombia")`
+- w/ Prof. Minelle Silva (La Rochele Business School)`r emo::ji("france")`
+- w/ Prof. Guillermo Davila (Univ de Lima) `r emo::ji("peru")`
+- w/ Prof. Peter Wells (Cardiff Univ)`r emo::ji("uk")`
 
 ```{r eval=FALSE}
 CV %<>% print_text_block('learning_experience_aside')
@@ -187,7 +192,7 @@ CV %<>% print_text_block('learning_experience_aside')
 
 
 
-## Industry Experience {data-icon="suitcase"}
+## Funding and Grants {data-icon="suitcase"}
 
 ```{r}
 CV %<>% print_section('industry_positions')
@@ -212,7 +217,7 @@ CV %<>% print_section('industry_positions')
 # Second page sidebar {.aside .extra-sidebar}
 ```
 
-\newpage
+
 
 ## Selected Publications {data-icon="book"}
 
