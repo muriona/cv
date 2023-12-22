@@ -1,7 +1,9 @@
 ---
-title: "Untitled"
+title: "Lattes and Scopus Data"
 format: html
 editor: visual
+bibliography: bibliography.bib
+csl: apa-single-spaced.csl
 ---
 
 ```{r}
@@ -64,3 +66,21 @@ projetos %>%
   select(nome_do_projeto_ingles, ano_inicio,financiadores) %>% 
   knitr::kable()
 ```
+
+## Bibtex
+
+According to [@baur2018]
+
+```{r}
+library(dplyr)
+library(vitae)
+library(bib2df)
+library(tidyverse)
+#knitr::write_bib(c("vitae", "tibble"), "scopus.bib")
+
+df <- bib2df("scopus.bib")
+
+
+```
+
+conforme [@benvenutti2017] and [@luna2020] [@baur2018] [@borges2021] [@uriona2019]
