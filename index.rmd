@@ -4,12 +4,14 @@ author: Mauricio Uriona Maldonado
 date: "`r Sys.Date()`"
 params:
   pdf_mode:
-    value: false
+    value: true
 output:
   pagedown::html_resume:
     css: ['custom_resume_mleary.css', 'styles_html_mleary.css', 'resume']
     self_contained: false
 knit: pagedown::chrome_print
+bibliography: bibliography.bib
+cls: getLattes/apa-single-spaced.csl
 ---
 
 ```{r, include=FALSE}
@@ -61,9 +63,9 @@ if(params$pdf_mode){
 
 ## Contact {#contact}
 
-- Born and raised in La Paz, Bolivia `r emo::ji("bolivia")`
+-   Born and raised in La Paz, Bolivia `r emo::ji("bolivia")`
 
-- Lives in Florianopolis, Brazil `r emo::ji("brazil")`
+-   Lives in Florianopolis, Brazil `r emo::ji("brazil")`
 
 ```{r message=FALSE, warning=FALSE}
 library(lubridate)
@@ -85,7 +87,7 @@ orid <- getLattes::getOrientacoesDoutorado(lattes)
 orim <- getLattes::getOrientacoesMestrado(lattes)
 ```
 
-- Age: *`r myage` years old*
+-   Age: *`r myage` years old*
 
 ```{r contactinfo}
 #CV %>% print_contact_info()
@@ -95,8 +97,6 @@ glue::glue('
     - <i class="fa fa-globe"></i> [-](https://sinergia.ufsc.br/project/uriona/) <i class="fa fa-github"></i> [-](https://github.com/muriona) <i class="fab fa-linkedin-in"></i> [-](https://www.linkedin.com/in/uriona/) <i class="fa-brands fa-orcid"></i> [-](https://www.orcid.org/0000-0002-1174-4828) <i class="fab fa-researchgate"></i> [-](https://www.researchgate.net/profile/Mauricio-Uriona-Maldonado-2)
   ')
 ```
-
-
 
 ## Language Skills {#skills}
 
@@ -128,7 +128,6 @@ glue::glue('
   ')
 
 ```
-
 
 ## Disclaimer {#disclaimer}
 
@@ -162,8 +161,6 @@ CV %<>% print_section('education')
 CV %<>% print_section('teaching_positions')
 ```
 
-
-
 ## Visiting Positions {data-icon="globe"}
 
 ```{r}
@@ -179,30 +176,25 @@ CV %<>% print_section('research_positions')
 
 ```
 
- 
-::: {.aside}
-
+::: aside
 ***Industry Experience***
 
-- Consultant in Innovation Management (FIESC) - 2012-2013
-- Business Analyst (Dinamica Software) - 2005-2008
+-   Consultant in Innovation Management (FIESC) - 2012-2013
+-   Business Analyst (Dinamica Software) - 2005-2008
 
 ***Noteworthy International Collaborations***
 
-- w/ Prof. Sara Grobbelaar (Stellenbosch Univ) `r emo::ji("south_africa")`
-- w/ Prof. Rainer Walz (Fraunhofer ISI) `r emo::ji("germany")`
-- w/ Prof. Milton Herrera (Univ Militar Nueva Granada)`r emo::ji("colombia")`
-- w/ Prof. Minelle Silva (La Rochele Business School)`r emo::ji("france")`
-- w/ Prof. Guillermo Davila (Univ de Lima) `r emo::ji("peru")`
-- w/ Prof. Peter Wells (Cardiff Univ)`r emo::ji("uk")`
+-   w/ Prof. Sara Grobbelaar (Stellenbosch Univ) `r emo::ji("south_africa")`
+-   w/ Prof. Rainer Walz (Fraunhofer ISI) `r emo::ji("germany")`
+-   w/ Prof. Milton Herrera (Univ Militar Nueva Granada)`r emo::ji("colombia")`
+-   w/ Prof. Minelle Silva (La Rochele Business School)`r emo::ji("france")`
+-   w/ Prof. Guillermo Davila (Univ de Lima) `r emo::ji("peru")`
+-   w/ Prof. Peter Wells (Cardiff Univ)`r emo::ji("uk")`
 
 ```{r eval=FALSE}
 CV %<>% print_text_block('learning_experience_aside')
 ```
 :::
-
-
-
 
 ## Funding and Grants {data-icon="dollar-sign"}
 
@@ -213,8 +205,6 @@ CV %<>% print_section('industry_positions')
 
 
 ```
-
-
 
 ```{css, echo=FALSE, eval=FALSE}
 
@@ -237,13 +227,9 @@ CV %<>% print_section('industry_positions')
 ```
 
 
-
-
-
 ## Selected Publications {data-icon="book"}
 
-
-```{r articles, eval=FALSE}
+```{r articles, eval=TRUE}
 #CV %<>% print_section('academic_articles')
 
 artigos %>% 
@@ -254,72 +240,83 @@ artigos %>%
          doi = map(doi, gt::html),
          titulo_do_artigo_ingles = ifelse(is.na(titulo_do_artigo_ingles),titulo_do_artigo,                                          titulo_do_artigo_ingles)) %>% 
   arrange(desc(ano)) %>% 
-  head(30) %>% 
+  head(20) %>% 
   gt::gt() %>% 
   tab_options(table.font.size = pct(80)) %>% 
   cols_label(
     titulo_do_artigo_ingles = "Title",
     ano = "Year",
     titulo_do_periodico_ou_revista = "Journal"
+  )%>% 
+  tab_header(
+    title = "Most Recent Publications"
   )
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
+library(bib2df)
+scopus <- bib2df("getLattes/scopus.bib") %>% 
+  separate(NOTE, into = c("note","citations"), sep = ":") %>% 
+  separate(citations, into = c("citations","open"), sep = ";") %>% 
+  mutate(citations = as.numeric(citations),
+         YEAR = as.numeric(YEAR),
+         DOI = sprintf('<p><a href = "%s">%s</a>', DOI,DOI),
+         DOI = map(DOI, gt::html))
+
+scopus %>% 
+  filter(CATEGORY == "ARTICLE") %>% 
+  filter(citations > 7) %>% 
+  arrange(desc(citations)) %>% 
+  select(YEAR, TITLE, JOURNAL, DOI, citations) %>% 
+  head(10) %>% 
+  gt() %>% 
+  tab_options(table.font.size = pct(80)) %>% 
+  cols_label(
+    TITLE = "Title",
+    YEAR = "Year",
+    JOURNAL = "Journal"
+  ) %>% 
+  tab_header(
+    title = "Top-10 Highly Cited Publications"
+  )
+  
+```
+
+
+```{r eval=FALSE}
 artigos %>% 
   mutate(ano = as.numeric(ano_do_artigo)) %>% 
-  select(ano, titulo_do_artigo_ingles, titulo_do_periodico_ou_revista,
-         home_page_do_trabalho) %>% 
-#  mutate(doi = sprintf('<p><a href = "%s">%s</a>', doi,doi),
-#         doi = map(doi, gt::html),
-#         titulo_do_artigo_ingles = ifelse(is.na(titulo_do_artigo_ingles),titulo_do_artigo,                                          titulo_do_artigo_ingles)) %>% 
   arrange(desc(ano)) %>% 
+  mutate(titulo_do_artigo_ingles =
+           ifelse(is.na(titulo_do_artigo_ingles),
+                  titulo_do_artigo,           
+                  titulo_do_artigo_ingles),
+         home_page_do_trabalho=
+           ifelse(is.na(home_page_do_trabalho), doi,
+                  home_page_do_trabalho)) %>%
   head(15) %>% 
-  kbl(col.names = c("Year", "Title","Journal","DOI"),
-      align = c("c","l","l","l")) %>%
-  kable_styling(full_width = T) %>%
-  column_spec(1, width = "15em", bold = T, border_right = T) %>%
-  column_spec(2, width = "35em", bold = F, border_right = T) %>%
-  column_spec(3, width = "30em", bold = F, border_right = T) %>%
-  #column_spec(4, width = "10em", bold = F, border_right = T) %>%
-  row_spec(row = 0, color = "white", background = "dodgerblue")
-#  column_spec(2, width = "30em", background = "yellow")
+  select(ano, titulo_do_artigo_ingles, titulo_do_periodico_ou_revista) %>% 
+  kbl(col.names = c("Year", "Title","Journal"),
+      align = c("c","l","l","l"))# %>%
+ # kable_styling(full_width = F) %>%
+ # column_spec(1, width = "15em", bold = T, border_right = T) %>%
+#  column_spec(2, width = "35em", bold = F, border_right = T) %>%
+ # column_spec(3, width = "30em", bold = F, border_right = T) %>%
+  ##column_spec(4, width = "10em", bold = F, border_right = T) %>%
+  #row_spec(row = 0, color = "white", background = "dodgerblue")
+##  column_spec(2, width = "30em", background = "yellow")
   
 ```
 
-## Selected Publications (continued)
 
-```{r}
-artigos %>% 
-  mutate(ano = as.numeric(ano_do_artigo)) %>% 
-  select(ano, titulo_do_artigo_ingles, titulo_do_periodico_ou_revista,
-         home_page_do_trabalho) %>% 
-#  mutate(doi = sprintf('<p><a href = "%s">%s</a>', doi,doi),
-#         doi = map(doi, gt::html),
-#         titulo_do_artigo_ingles = ifelse(is.na(titulo_do_artigo_ingles),titulo_do_artigo,                                          titulo_do_artigo_ingles)) %>% 
-  arrange(desc(ano)) %>% 
-  slice(16:30) %>% 
-  kbl(col.names = c("Year", "Title","Journal","DOI"),
-      align = c("c","l","l","l")) %>%
-  kable_styling(full_width = T) %>%
-  column_spec(1, width = "15em", bold = T, border_right = T) %>%
-  column_spec(2, width = "35em", bold = F, border_right = T) %>%
-  column_spec(3, width = "30em", bold = F, border_right = T) %>%
-  #column_spec(4, width = "10em", bold = F, border_right = T) %>%
-  row_spec(row = 0, color = "white", background = "dodgerblue")
-#  column_spec(2, width = "30em", background = "yellow")
-  
-```
 
 ```{r links, eval=FALSE}
 CV %<>% print_links()
 ```
 
-
-
 # Aside {.aside .extra-sidebar}
 
 ## Pub Record
-
 
 -   **`r nrow(artigos)`** Journal Publications
 -   **5** Books
@@ -328,9 +325,8 @@ CV %<>% print_links()
 
 ## Supervisions
 
-- **`r nrow(orid)`** Completed PhD Supervisions
-- **`r nrow(orim)`** Completed MSc Supervisions
+-   **`r nrow(orid)`** Completed PhD Supervisions
+-   **`r nrow(orim)`** Completed MSc Supervisions
 
 See full details at the Brazilian Lattes online cv Platform [here](http://lattes.cnpq.br/6929645347412345)
-
 
