@@ -1,0 +1,97 @@
+---
+title: "Mauricio Uriona Maldonado - CV"
+author: "Mauricio Uriona Maldonado"
+date: last-modified
+date-format: "DD-MMM-YYYY"
+format:
+  html:
+    theme: cosmo # Choose a Quarto theme (e.g., cosmo, journal, flatly)
+    css: ['custom_resume_mleary.css', 'styles_html_mleary.css', 'resume.css'] # Ensure 'resume.css' exists or merge styles
+    toc: false
+    self-contained: true
+  pdf:
+    documentclass: article
+    geometry: "left=1in,right=1in,top=1in,bottom=1in"
+    # Potentially add more PDF customization here if needed
+params:
+  pdf_mode:
+    value: false # Set default, can be overridden during render
+bibliography: bibliography.bib
+csl: getLattes/apa-single-spaced.csl
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r setup, include=FALSE}
+# Load necessary libraries
+library(magrittr)
+library(fontawesome) # May need adaptation or use Quarto icons
+library(googlesheets4)
+library(rorcid)
+library(tidyverse)
+library(gt)
+library(glue)
+library(lubridate)
+library(bib2df)
+library(getLattes) # Ensure this package and its dependencies are installed
+
+# Source custom functions (ensure path is correct)
+# !!! This script likely needs debugging for the 'loc' argument error !!!
+source("cv_printing_functions.r")
+
+# Read in all data and initialize a CV printer object
+# Ensure the Google Sheet is publicly accessible or handle authentication
+#gs4_deauth() # De-authenticate for public sheet access
+CV <- create_CV_object(
+  data_location = "https://docs.google.com/spreadsheets/d/1kMr3CCTRpn7tkGkcfm50V-NeJKNlaXmHznc-iWx09ts",
+  pdf_mode = params$pdf_mode
+)
+
+# Load Lattes/Scopus data (ensure paths are correct)
+lattes_path <- "getLattes/6929645347412345.zip"
+scopus_path <- "getLattes/scopus.bib"
+
+if (file.exists(lattes_path)) {
+  lattes <- xml2::read_xml(lattes_path)
+  artigos <- getArtigosPublicados(lattes)
+  livros <- getCapitulosLivros(lattes)
+  congressos <- getEventosCongressos(lattes)
+  orid <- getOrientacoesDoutorado(lattes)
+  orim <- getOrientacoesMestrado(lattes)
+} else {
+  # Handle case where Lattes file is missing
+  artigos <- livros <- congressos <- orid <- orim <- tibble()
+  warning("Lattes data file not found at: ", lattes_path)
+}
+
+if (file.exists(scopus_path)) {
+  scopus <- bib2df(scopus_path) %>%
+    separate(NOTE, into = c("note","citations"), sep = ":", fill = "right") %>%
+    separate(citations, into = c("citations","open"), sep = ";", fill = "right") %>%
+    mutate(citations = suppressWarnings(as.numeric(trimws(citations))), # Handle potential parsing issues
+           YEAR = as.numeric(YEAR),
+           DOI_link = ifelse(!is.na(DOI), sprintf('<a href="https://doi.org/%s" target="_blank">%s</a>', DOI, DOI), NA),
+           DOI_link = map(DOI_link, gt::html)) %>%
+    replace_na(list(citations = 0)) # Default citations to 0 if NA
+} else {
+  scopus <- tibble()
+  warning("Scopus bib file not found at: ", scopus_path)
+}
+
+# Calculate Age
+dob <- ymd(19820425)
+myage <- interval(dob,today()) %/% years(1)
+
+# Get ORCID Bio
+orcid_id <- "0000-0002-1174-4828"
+intro <- tryCatch({
+  bio_info <- orcid_bio(orcid_id)
+  bio_info[[orcid_id]]$content
+}, error = function(e) {
+  warning("Could not fetch ORCID bio: ", e$message)
+  "Bio currently unavailable."
+})
+```
+

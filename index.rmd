@@ -82,7 +82,7 @@ library(getLattes)
 lattes <- xml2::read_xml("getLattes/6929645347412345.zip")
 artigos <- getArtigosPublicados(lattes)
 livros <- getCapitulosLivros(lattes)
-congressos <- getLattes::getTrabalhosEmEventos(lattes)
+congressos <- getLattes::getEventosCongressos(lattes)
 orid <- getLattes::getOrientacoesDoutorado(lattes)
 orim <- getLattes::getOrientacoesMestrado(lattes)
 ```
@@ -185,6 +185,7 @@ CV %<>% print_section('research_positions')
 ***Noteworthy International Collaborations***
 
 -   w/ Prof. Sara Grobbelaar (Stellenbosch Univ) `r emo::ji("south_africa")`
+-   w/ Prof. Rhythm Singh (IIT Roorkee) `r emo::ji("india")`
 -   w/ Prof. Rainer Walz (Fraunhofer ISI) `r emo::ji("germany")`
 -   w/ Prof. Milton Herrera (Univ Militar Nueva Granada)`r emo::ji("colombia")`
 -   w/ Prof. Minelle Silva (La Rochele Business School)`r emo::ji("france")`
@@ -229,7 +230,7 @@ CV %<>% print_section('industry_positions')
 
 ## Selected Publications {data-icon="book"}
 
-```{r articles, eval=TRUE}
+```{r articles, eval=FALSE}
 #CV %<>% print_section('academic_articles')
 
 artigos %>% 
@@ -265,19 +266,20 @@ scopus <- bib2df("getLattes/scopus.bib") %>%
 
 scopus %>% 
   filter(CATEGORY == "ARTICLE") %>% 
-  filter(citations > 7) %>% 
-  arrange(desc(citations)) %>% 
-  select(YEAR, TITLE, JOURNAL, DOI, citations) %>% 
-  head(10) %>% 
+  filter(is.na(open)) %>% 
+  filter(YEAR >=2020) %>% 
+  arrange(desc(YEAR)) %>% 
+  select(YEAR, TITLE, JOURNAL, DOI) %>% 
+  head(5) %>% 
   gt() %>% 
-  tab_options(table.font.size = pct(80)) %>% 
+  tab_options(table.font.size = pct(110)) %>% 
   cols_label(
     TITLE = "Title",
     YEAR = "Year",
     JOURNAL = "Journal"
   ) %>% 
   tab_header(
-    title = "Top-10 Highly Cited Publications"
+    title="Relevant Publications in the last five years - Citation at Scopus"
   )
   
 ```
@@ -321,7 +323,7 @@ CV %<>% print_links()
 -   **`r nrow(artigos)`** Journal Publications
 -   **5** Books
 -   **`r nrow(livros)`** Book Chapters
--   **`r nrow(congressos)`** Conference Papers
+-   **180** Conference Papers
 
 ## Supervisions
 

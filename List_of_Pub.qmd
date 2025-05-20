@@ -1,0 +1,42 @@
+---
+title: "List of Publications"
+author: Mauricio Uriona Maldonado
+format: html
+editor: visual
+execute: 
+  echo: false
+  message: false
+  warning: false
+bibliography: getLattes/scopus.bib
+---
+
+```{r eval=TRUE}
+library(bib2df)
+library(gt)
+library(tidyverse)
+
+scopus <- bib2df("getLattes/scopus.bib") %>% 
+  separate(NOTE, into = c("note","citations"), sep = ":") %>% 
+  separate(citations, into = c("citations","open"), sep = ";") %>% 
+  mutate(citations = as.numeric(citations),
+         YEAR = as.numeric(YEAR),
+         DOI = sprintf('<p><a href = "%s">%s</a>', DOI,DOI),
+         DOI = map(DOI, gt::html))
+
+scopus %>% 
+  filter(CATEGORY == "ARTICLE") %>% 
+  #filter(citations > 1) %>% 
+  arrange(desc(YEAR)) %>% 
+  select(YEAR, TITLE, JOURNAL, DOI, citations) %>% 
+ # head(10) %>% 
+  gt() %>% 
+  tab_options(table.font.size = pct(80)) %>% 
+  cols_label(
+    TITLE = "Title",
+    YEAR = "Year",
+    JOURNAL = "Journal"
+  ) %>% 
+  tab_header(
+    title = "Full List of Publications"
+  )
+```
